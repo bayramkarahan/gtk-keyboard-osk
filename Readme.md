@@ -20,7 +20,7 @@ Screen keyboard written gtk3 and pynput
 
 # Installation:
 ```
-git clone https://gitlab.com/sulincix/gtk-keyboard-osk.git gtk-keyboard-osk
+git clone https://github.com/bayramkarahan/gtk-keyboard-osk.git gtk-keyboard-osk
 cd gtk-keyboard-osk
 make install
 ```
