@@ -1,6 +1,8 @@
 # Gtk on screen keyboard (gtk-keyboard-osk)
 
 Screen keyboard written gtk3 and pynput
+<br/>
+![gtk-keyboard-osk](https://github.com/bayramkarahan/gtk-keyboard-osk/blob/master/keyboard.png)<br/>
 
 ## Advantages:
 
