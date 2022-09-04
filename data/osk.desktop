@@ -4,5 +4,6 @@ Terminal=false
 Icon=osk
 Type=Application
 Exec=python3 /usr/share/osk/application.py --no-headerbar
-Name=osk.desktop
+Name=osk
 GenericName=osk
+Categories=Qt;Utility;

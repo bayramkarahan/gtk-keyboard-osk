@@ -68,7 +68,7 @@ class KeyboardOSK(Gtk.Box):
         self.l[1].pack_start(key(Key.backspace, " ⌫ ").button, 1, True, False)
         self.l[1].pack_start(key(Key.delete, "Del").button,1,True,False)
         # Row 2
-        self.l[2].pack_start(key(Key.tab, " Tab⭾ ").button, 1, True, False)
+        self.l[2].pack_start(key(Key.tab, " Tab ").button, 1, True, False)
         for i in range(16,28):
             self.add_key(i,2)
         self.l[2].pack_end(key(Key.page_down, " PgDn ").button, 1, True, False)
