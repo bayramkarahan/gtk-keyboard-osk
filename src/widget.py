@@ -187,11 +187,14 @@ class KeyboardOSK(Gtk.Box):
             background: #008e00;
         }
         #key_normal, #key_lock, #key_enabled{
+	    background: #102030;
             margin: 0px;
             padding: 0px;
             min-height: 32px;
             min-width: 32px;
-            border: none;
+            border: 3px solid #405060;
+	    color:#FFF;
+            border-radius:5px;
         }
         """
         gtk_provider = Gtk.CssProvider()

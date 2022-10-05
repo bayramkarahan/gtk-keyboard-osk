@@ -27,7 +27,7 @@ variant=subprocess.getoutput("setxkbmap -query | grep variant").split(":")[-1].s
 run_once()
 # Window features
 w = Gtk.Window()
-w.set_opacity(0.95)
+w.set_opacity(1.0)
 w.set_accept_focus(False)
 #w.set_deletable(False)
 w.set_keep_above(True)
@@ -94,8 +94,10 @@ screen = Gdk.Screen.get_default()
 css = """
 window, button, headerbar {
     outline-style: none;
-    border: none;
+    border: 1px solid black;
+    background: #000;
 }"""
+
 gtk_provider = Gtk.CssProvider()
 gtk_context = Gtk.StyleContext()
 gtk_context.add_provider_for_screen(
