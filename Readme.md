@@ -19,7 +19,8 @@ Screen keyboard written gtk3 and pynput
 * gir1.2-gtk-3.0 (python3-gobject)
 * python3-pynput (you can install with pip3)
 * console-setup (for keyboard layout)
-
+* apt install git wget gir1.2-gtk-3.0 console-setup python3-gi python3-pip usbutils tzdata python3-dev 
+* pip3 install pynput
 # Installation:
 ```
 git clone https://github.com/bayramkarahan/gtk-keyboard-osk.git gtk-keyboard-osk
