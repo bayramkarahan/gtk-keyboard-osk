@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import gi
+import time
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 from pynput.keyboard import Key, Controller
@@ -17,7 +18,21 @@ capslock = Gtk.Button(label=" CapsLk ")
 
 active_toggle = []
 all_keys = []
+class DialogExample(Gtk.Dialog):
+    def __init__(self, parent):
+        super().__init__(title="My Dialog", transient_for=parent, flags=0)
+        self.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
+        )
 
+        self.set_default_size(150, 100)
+
+        label = Gtk.Label(label="This is a dialog to display additional information")
+
+        box = self.get_content_area()
+        box.add(label)
+        self.show_all()
+        
 class KeyboardOSK(Gtk.Box):
     def __init__(self,embeded=True,nocreate=False):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
@@ -220,6 +235,10 @@ class key:
         self.button = Gtk.Button(label=m)
         self.active = False
         self.lock = False
+        #print ("deneme")
+        color = Gdk.color_parse('#aaaaaa')
+        self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
+
         if not toggle:
             self.button.connect("pressed", self.press)
             self.button.connect("released", self.release)
@@ -230,10 +249,15 @@ class key:
         self.button.set_name("key_normal")
         global all_keys
         all_keys.append(self)
-
+        
+         
     def press(self, widget):
         global alt_enabled
         global big
+        
+        color = Gdk.color_parse('#aa0000')
+        self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
+
         self.button.set_name("key_enabled")
         if self.lock:
             self.button.set_name("key_lock")
@@ -243,11 +267,14 @@ class key:
             keyboard.press(Key.alt)
         if self.key:
             keyboard.press(self.key)
+            #time.sleep(0.1)
+            
         if self.key not in active_toggle:
             active_toggle.append(self.key)
         for k in all_keys:
             k.update()
-
+            
+            
     def update(self):
         global active_toggle
         if Key.shift in active_toggle and Key.alt_gr not in active_toggle and self.label_sft:
@@ -261,6 +288,10 @@ class key:
 
     def release(self, widget):
         global alt_enabled
+        
+        color = Gdk.color_parse('#aaaaaa')
+        self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
+
         if big and self.flat:
             keyboard.release(Key.shift)
         if not self.lock:
