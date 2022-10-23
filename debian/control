@@ -1,0 +1,16 @@
+Source: osk
+Section: utils
+Priority: optional
+Maintainer: Bayram KARAHAN <bayramk@gmail.com>
+Build-Depends: make
+Standards-Version: 4.3.0
+Homepage: https://etap.org.tr
+
+Package: osk
+Architecture: all
+Depends: ${misc:Depends}, libc6,
+         python3-pip,
+         gir1.2-gtk-3.0,
+         gir1.2-webkit2-4.0,
+         console-setup
+Description: Customized osk keyboard
