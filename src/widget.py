@@ -37,7 +37,7 @@ class KeyboardOSK(Gtk.Box):
         color = Gdk.color_parse('#aaaaaa')
         alt.modify_bg(Gtk.StateType.PRELIGHT, color)
         capslock.modify_bg(Gtk.StateType.PRELIGHT, color)
-        self.btnenter=key(Key.enter, "Enter").button
+        self.btnenter=key(Key.enter, "Enter ⏎").button
         self.btnenter.set_size_request(width=self.wsize+self.wsize, height=40)
         
         self.btnend=key(Key.end, "End").button
@@ -52,7 +52,7 @@ class KeyboardOSK(Gtk.Box):
         self.btnpgup=key(Key.page_up, "Pgup").button
         self.btnpgup.set_size_request(width=self.wsize, height=20)
         
-        self.btnshft=key(Key.shift, "Shft").button
+        self.btnshft=key(Key.shift, "Shft ⇧").button
         self.btnshft.set_size_request(width=self.wsize+self.wsize, height=20)
         
         self.btndel=key(Key.delete, "Del").button
@@ -121,7 +121,7 @@ class KeyboardOSK(Gtk.Box):
         #self.l[3].pack_start(key(Key.enter, "   Enter   ").button, 1, True, False)
         
          # Row
-        self.l[4].pack_start(key(Key.shift, " Shft ", True).button, 1, True, False)
+        self.l[4].pack_start(key(Key.shift, " Shft ⇧ ", True).button, 1, True, False)
         self.add_key(86,4) # TLDE
         for i in range(44,54):
             self.add_key(i,4)
