@@ -1,8 +1,7 @@
 #!/usr/bin/python3
-import gi
-import time
+import gi, os
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GdkPixbuf
 from pynput.keyboard import Key, Controller
 import subprocess
 
@@ -13,26 +12,12 @@ alt_lock = False
 # alt key fixes (xfce lxde cinnamon)
 alt_enabled = False
 big = False
-alt = Gtk.Button(label=" ⌥ ")
+alt = Gtk.Button(label=" Alt ")
 capslock = Gtk.Button(label=" CapsLk ")
 
 active_toggle = []
 all_keys = []
-class DialogExample(Gtk.Dialog):
-    def __init__(self, parent):
-        super().__init__(title="My Dialog", transient_for=parent, flags=0)
-        self.add_buttons(
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
-        )
 
-        self.set_default_size(150, 100)
-
-        label = Gtk.Label(label="This is a dialog to display additional information")
-
-        box = self.get_content_area()
-        box.add(label)
-        self.show_all()
-        
 class KeyboardOSK(Gtk.Box):
     def __init__(self,embeded=True,nocreate=False):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
@@ -43,11 +28,40 @@ class KeyboardOSK(Gtk.Box):
         self.kbd_a = {}
         self.kbd_as = {}
         self.l = []
-
+        self.btnenter=None
+        self.wsize=40
         # Signal connect
         alt.connect("clicked", self.alt_toggle)
         capslock.connect("clicked", self.capslock_toggle)
-        capslock.set_name("key_disabled")
+        capslock.set_name("key_normal")
+        color = Gdk.color_parse('#aaaaaa')
+        alt.modify_bg(Gtk.StateType.PRELIGHT, color)
+        capslock.modify_bg(Gtk.StateType.PRELIGHT, color)
+        self.btnenter=key(Key.enter, "Enter").button
+        self.btnenter.set_size_request(width=self.wsize+self.wsize, height=40)
+        
+        self.btnend=key(Key.end, "End").button
+        self.btnend.set_size_request(width=self.wsize, height=20)
+        
+        self.btnpgdn=key(Key.page_down, "Pgdn").button
+        self.btnpgdn.set_size_request(width=self.wsize, height=20)
+      
+        self.btnhome=key(Key.home, "Home").button
+        self.btnhome.set_size_request(width=self.wsize, height=20)
+       
+        self.btnpgup=key(Key.page_up, "Pgup").button
+        self.btnpgup.set_size_request(width=self.wsize, height=20)
+        
+        self.btnshft=key(Key.shift, "Shft").button
+        self.btnshft.set_size_request(width=self.wsize+self.wsize, height=20)
+        
+        self.btndel=key(Key.delete, "Del").button
+        self.btndel.set_size_request(width=self.wsize, height=20)
+
+        #self.l[1].pack_start(key(Key.backspace, "  ⌫  ").button, 1, True, False)
+
+        self.btnbspc=key(Key.backspace, "⌫").button
+        self.btnbspc.set_size_request(width=self.wsize+self.wsize, height=20)
 
         if not nocreate:
             self.update()
@@ -58,56 +72,71 @@ class KeyboardOSK(Gtk.Box):
         self.l = []
         for j in [0,1,2,3,4,5]:
             ll = Gtk.Box()
-
             self.l.append(ll)
             if embeded:
                 self.pack_start(ll, 1, True, True)
         # F buttons (Row 0 or headerbar)
+        self.l[0].pack_start(key(Key.esc, "esc").button, 1,True,False)
+        self.l[0].pack_start(Gtk.Button(label=""),1,True,False)
         self.l[0].pack_start(key(Key.f1, " f1 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f2, " f2 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f3, " f3 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f4, " f4 ").button,1,True,False)
+        self.l[0].pack_start(Gtk.Button(label=""),1,True,False)
         self.l[0].pack_start(key(Key.f5, " f5 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f6, " f6 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f7, " f7 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f8, " f8 ").button,1,True,False)
+        self.l[0].pack_start(Gtk.Button(label=""),1,True,False)
         self.l[0].pack_start(key(Key.f9, " f9 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f10, " f10 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f11, " f11 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f12, " f12 ").button,1,True,False)
+        self.l[0].pack_start(Gtk.Button(label=""),1,True,False)
+        self.l[0].pack_start(key(Key.print_screen, "PrtSc").button,1,True,False)
+        #self.l[0].pack_start(key(Key.insert, "Insrt").button,1,True,False)
+        #self.l[0].pack_start(key(Key.delete, "Del").button,1,True,False)
+        self.l[0].pack_start(Gtk.Button(label=""),1,True,False)
+
+        #self.l[0].pack_start(Gtk.Button(label=""),1,True,False)
+    
         # Row 1
-        self.l[1].pack_start(key(Key.esc, "Esc").button, 1,True,False)
+        
+        #self.l[1].pack_start(self.add_key(41,1),1,True,False)
         self.add_key(41,1)
         for i in range(2,14):
             self.add_key(i,1)
-        self.l[1].pack_start(key(Key.backspace, " ⌫ ").button, 1, True, False)
-        self.l[1].pack_start(key(Key.delete, "Del").button,1,True,False)
+        #self.l[1].pack_start(Gtk.Button(label=""),1,True,False)
         # Row 2
         self.l[2].pack_start(key(Key.tab, " Tab ").button, 1, True, False)
         for i in range(16,28):
             self.add_key(i,2)
-        self.l[2].pack_end(key(Key.page_down, " PgDn ").button, 1, True, False)
-        self.l[2].pack_start(key(Key.page_up, " PgUp ").button, 1, True, False)
+        
+
         # Row 3
         self.l[3].pack_start(capslock, 1, True, False)
         for i in range(30,41):
             self.add_key(i,3)
         self.add_key(43,3)
-        self.l[3].pack_end(key(Key.enter, " Enter ⏎  ").button, 1, True, False)
-        # Row 4
-        self.l[4].pack_start(key(Key.shift, "  ⇧  ", True).button, 1, True, False)
+        #self.l[3].pack_start(key(Key.enter, "   Enter   ").button, 1, True, False)
+        
+         # Row
+        self.l[4].pack_start(key(Key.shift, " Shft ", True).button, 1, True, False)
         self.add_key(86,4) # TLDE
         for i in range(44,54):
             self.add_key(i,4)
-        self.l[4].pack_start(key(Key.home, " Home ").button, 1, True, False)
-        self.l[4].pack_start(key(Key.end, " End ").button, 1, True, False)
-        # Row 5
+        #self.l[4].pack_start(Gtk.Button(label=""),1,True,False)
+
+        
+        
+          # Row 5
         self.l[5].pack_start(key(Key.ctrl, " Ctrl ", True).button, 1, True, False)
-        self.l[5].pack_start(key(Key.cmd, " Alt ").button, 1, True, False)
+        self.l[5].pack_start(key(Key.cmd, " lnx ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.cmd, " ⌥ ").button, 1, True, False)
         self.l[5].pack_start(alt, 1, True, False)
-        self.l[5].pack_start(key(Key.space, 27*" ").button, 1, True, True)
-        self.l[5].pack_start(key(Key.alt_gr, " AltGr ", True).button, 1, True, False)
-        self.l[5].pack_start(key(Key.ctrl, " Ctrl ", True).button, 1, True, False)
+        self.l[5].pack_start(key(Key.space, " "*20).button, 1, True, True)
+        self.l[5].pack_start(key(Key.alt_gr, " Altgr ", True).button, 1, True, False)
+        #self.l[5].pack_start(key(Key.ctrl, " ctrl ", True).button, 1, True, False)
         self.l[5].pack_start(key(Key.left, " ← ").button, 1, True, False)
         self.l[5].pack_start(key(Key.up, " ↑ ").button, 1, True, False)
         self.l[5].pack_start(key(Key.down, " ↓ ").button, 1, True, False)
@@ -137,17 +166,27 @@ class KeyboardOSK(Gtk.Box):
             alt_lock = False
         if alt_enabled:
             widget.set_name("key_enabled")
+            color = Gdk.color_parse('#aa0000')
+            widget.modify_bg(Gtk.StateType.PRELIGHT, color)
         else:
             widget.set_name("key_normal")
+            color = Gdk.color_parse('#aaaaaa')
+            widget.modify_bg(Gtk.StateType.PRELIGHT, color)
         if alt_lock:
             widget.set_name("key_lock")
+            color = Gdk.color_parse('#00aa00')
+            widget.modify_bg(Gtk.StateType.PRELIGHT, color)
 
     def capslock_toggle(self,widget):
         global big
         if big:
             widget.set_name("key_normal")
+            color = Gdk.color_parse('#aaaaaa')
+            widget.modify_bg(Gtk.StateType.PRELIGHT, color)
         else:
             widget.set_name("key_lock")
+            color = Gdk.color_parse('#00aa00')
+            widget.modify_bg(Gtk.StateType.PRELIGHT, color)
         big = not big
         global active_toggle
         if big and Key.shift not in active_toggle:
@@ -186,6 +225,7 @@ class KeyboardOSK(Gtk.Box):
                 self.kbd_as[num] = self.u2str(ascode)
             except:
                 pass
+
     def style(self):
         screen = Gdk.Screen.get_default()
         css = """
@@ -235,10 +275,6 @@ class key:
         self.button = Gtk.Button(label=m)
         self.active = False
         self.lock = False
-        #print ("deneme")
-        color = Gdk.color_parse('#aaaaaa')
-        self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
-
         if not toggle:
             self.button.connect("pressed", self.press)
             self.button.connect("released", self.release)
@@ -247,34 +283,33 @@ class key:
         if toggle:
             single_keys.append(self)
         self.button.set_name("key_normal")
+        color = Gdk.color_parse('#aaaaaa')
+        self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
         global all_keys
         all_keys.append(self)
-        
-         
+        self.update()
+
     def press(self, widget):
         global alt_enabled
         global big
-        
+        self.button.set_name("key_enabled")
         color = Gdk.color_parse('#aa0000')
         self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
-
-        self.button.set_name("key_enabled")
         if self.lock:
             self.button.set_name("key_lock")
+            color = Gdk.color_parse('#00aa00')
+            self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
         if big and self.flat:
             keyboard.press(Key.shift)
         if alt_enabled or alt_lock:
             keyboard.press(Key.alt)
         if self.key:
             keyboard.press(self.key)
-            #time.sleep(0.1)
-            
         if self.key not in active_toggle:
             active_toggle.append(self.key)
         for k in all_keys:
             k.update()
-            
-            
+
     def update(self):
         global active_toggle
         if Key.shift in active_toggle and Key.alt_gr not in active_toggle and self.label_sft:
@@ -288,15 +323,13 @@ class key:
 
     def release(self, widget):
         global alt_enabled
-        
-        color = Gdk.color_parse('#aaaaaa')
-        self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
-
         if big and self.flat:
             keyboard.release(Key.shift)
         if not self.lock:
             self.active = False
             self.button.set_name("key_normal")
+            color = Gdk.color_parse('#aaaaaa')
+            self.button.modify_bg(Gtk.StateType.PRELIGHT, color)
             if self.key:
                 keyboard.release(self.key)
         if self not in single_keys:
@@ -306,6 +339,8 @@ class key:
             if not alt_lock:
                 alt_enabled = False
                 alt.set_name("key_normal")
+                color = Gdk.color_parse('#aaaaaa')
+                alt.modify_bg(Gtk.StateType.PRELIGHT, color)
             keyboard.release(Key.alt)
         if self.key in active_toggle:
             active_toggle.remove(self.key)
