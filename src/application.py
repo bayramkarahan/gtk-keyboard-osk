@@ -161,11 +161,19 @@ w.show_all()
 # css
 screen = Gdk.Screen.get_default()
 css = """
-window, button, headerbar {
+window, button {
     outline-style: none;
     border: 1px solid black;
     background: #000;
-}"""
+}
+headerbar {
+    outline-style: none;
+    border: 1px solid black;
+    /*background: #005;*/
+background: rgb(16,32,48);
+background: linear-gradient(0deg, rgba(16,32,48,1) 30%, rgba(60,98,111,1) 74%);
+}
+"""
 
 gtk_provider = Gtk.CssProvider()
 gtk_context = Gtk.StyleContext()

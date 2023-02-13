@@ -12,5 +12,6 @@ Depends: ${misc:Depends}, libc6,
          python3-pip,
          gir1.2-gtk-3.0,
          gir1.2-webkit2-4.0,
-         console-setup
+         console-setup,
+         python3-pynput
 Description: Customized osk keyboard
