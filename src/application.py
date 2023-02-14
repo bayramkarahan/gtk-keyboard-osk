@@ -158,6 +158,8 @@ layout.pack_start(kutu, 1, True, True)
 # Show window
 w.add(layout)
 w.show_all()
+if os.environ["USER"]=="root":
+    w.resize(300,100)
 # css
 screen = Gdk.Screen.get_default()
 css = """
