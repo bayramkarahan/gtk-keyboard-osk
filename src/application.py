@@ -68,8 +68,6 @@ osk = KeyboardOSK(embeded=False,nocreate=True)
 osk.update(lang,variant)
 osk.create_layout(False)
 
-#osk.l[0].pack_start(Gtk.Label(label=" abc "), 1, True, True)
-#osk.l[0].pack_start(Gtk.Label(label=" abc "), 1, True, True)
 osk.l[0].pack_start(exit, 1, True, True)
 #osk.l[0].set_homogeneous(True)
 #osk.l[1].set_homogeneous(True)
@@ -87,12 +85,11 @@ elif "--no-headerbar" in sys.argv:
     layout.pack_start(osk.l[0], 1, True, True)
     layout.pack_start(osk.l[1], 1, True, True)
     w.set_title("")
-    print("bb")
+
 else:
     hb.set_custom_title(osk.l[0])
     w.set_titlebar(hb)
-    
-    print("cc")
+
 #hb.pack_start(Gtk.Label(label="    "))
 wwidth,wheight = w.get_size()
 #hb.set_size_request(wwidth,50)
@@ -158,8 +155,11 @@ layout.pack_start(kutu, 1, True, True)
 # Show window
 w.add(layout)
 w.show_all()
-if os.environ["USER"]=="root":
+if os.environ["USER"]=="root" and not(os.path.isfile("{}/.osk".format(os.environ["HOME"]))):
+    screensize = Gdk.Screen.get_default()
     w.resize(300,100)
+    windowwidth, windowheight = w.get_size()
+    w.move((screensize.get_width()-windowwidth)/2, screensize.get_height())
 # css
 screen = Gdk.Screen.get_default()
 css = """
