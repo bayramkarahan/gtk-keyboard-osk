@@ -159,7 +159,7 @@ if os.environ["USER"]=="root" and not(os.path.isfile("{}/.osk".format(os.environ
     screensize = Gdk.Screen.get_default()
     w.resize(300,100)
     windowwidth, windowheight = w.get_size()
-    w.move((screensize.get_width()-windowwidth)/2, screensize.get_height())
+    w.move((screensize.get_width()-windowwidth)/2, screensize.get_height()-windowheight)
 # css
 screen = Gdk.Screen.get_default()
 css = """
