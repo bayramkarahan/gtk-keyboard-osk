@@ -63,6 +63,26 @@ class KeyboardOSK(Gtk.Box):
         self.btnbspc=key(Key.backspace, "⌫").button
         self.btnbspc.set_size_request(width=self.wsize+self.wsize, height=20)
 
+        self.btnprtsc=key(Key.print_screen, "PrtSc").button
+        self.btnprtsc.set_size_request(width=self.wsize, height=20)
+
+        self.btnleft=key(Key.print_screen, " ← ").button
+        self.btnleft.set_size_request(width=self.wsize, height=20)
+
+        self.btnright=key(Key.print_screen, " → ").button
+        self.btnright.set_size_request(width=self.wsize, height=20)
+
+        self.btnup=key(Key.print_screen, " ↑ ").button
+        self.btnup.set_size_request(width=self.wsize, height=20)
+
+        self.btndown=key(Key.print_screen, " ↓ ").button
+        self.btndown.set_size_request(width=self.wsize, height=20)
+        #self.l[5].pack_start(key(Key.left, " ← ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.up, " ↑ ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.down, " ↓ ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.right, " → ").button, 1, True, False)
+
+
         if not nocreate:
             self.update()
             self.create_layout(embeded)
@@ -93,7 +113,7 @@ class KeyboardOSK(Gtk.Box):
         self.l[0].pack_start(key(Key.f11, " f11 ").button,1,True,False)
         self.l[0].pack_start(key(Key.f12, " f12 ").button,1,True,False)
         self.l[0].pack_start(Gtk.Label(" "),1,True,False)
-        self.l[0].pack_start(key(Key.print_screen, "PrtSc").button,1,True,False)
+        #self.l[0].pack_start(key(Key.print_screen, "PrtSc").button,1,True,False)
         #self.l[0].pack_start(key(Key.insert, "Insrt").button,1,True,False)
         #self.l[0].pack_start(key(Key.delete, "Del").button,1,True,False)
         self.l[0].pack_start(Gtk.Label(" "),1,True,False)
@@ -137,10 +157,10 @@ class KeyboardOSK(Gtk.Box):
         self.l[5].pack_start(key(Key.space, " "*20).button, 1, True, True)
         self.l[5].pack_start(key(Key.alt_gr, " Altgr ", True).button, 1, True, False)
         #self.l[5].pack_start(key(Key.ctrl, " ctrl ", True).button, 1, True, False)
-        self.l[5].pack_start(key(Key.left, " ← ").button, 1, True, False)
-        self.l[5].pack_start(key(Key.up, " ↑ ").button, 1, True, False)
-        self.l[5].pack_start(key(Key.down, " ↓ ").button, 1, True, False)
-        self.l[5].pack_start(key(Key.right, " → ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.left, " ← ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.up, " ↑ ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.down, " ↓ ").button, 1, True, False)
+        #self.l[5].pack_start(key(Key.right, " → ").button, 1, True, False)
         
 
     def get_key(self,num):
@@ -245,8 +265,8 @@ class KeyboardOSK(Gtk.Box):
 	    background: #102030;
             margin: 0px;
             padding: 0px;
-            min-height: 32px;
-            min-width: 32px;
+            min-height: 28px;
+            min-width: 28px;
             border: 3px solid #405060;
 	    color:#FFF;
             border-radius:5px;
